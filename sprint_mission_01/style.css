@@ -1,0 +1,348 @@
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: 'RokafSans';
+  src: url('./fonts/ROKAF Sans Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+#header {
+  width: auto;
+  height: 4.375rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F3F4F6;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 120rem;
+  height: 4.375rem;
+  padding: 0 12.5rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F3F4F6;
+  position: fixed;
+  width: 100%;
+}
+
+.headerContainer {
+  width: 153px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0rem .5369rem;
+  cursor: pointer;
+}
+
+.logo {
+  width: 40px;
+  height: 40.1408px;
+}
+
+.PandaMarket {
+  width: 103px;
+  height: 35px;
+  margin-top: .61rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: 'RokafSans';
+  font-size: 25.6304px;
+  font-weight: 700;
+  font-style: bold;
+  text-align: center;
+  color: #3692ff;
+}
+
+.login {
+  width: 5.125rem;
+  height: 1.5rem;
+  border-radius: .5rem;
+  padding: .75rem 1.4375rem;
+  background-color: #3692ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: 'pretendard/lg-1rem-semibold';
+  font-size: 16px;
+  font-weight: 600;
+  font-style: semibold;
+  line-height: 1.625rem;
+  color:#F3F4F6;
+  cursor: pointer;
+}
+
+#main-banner-top {
+  width: auto;
+  height: 33.75rem;
+  margin-top: 4.375rem;
+  background-color: #CFE5FF;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+.banner-top {
+  width: 69.375rem;
+  height: 21.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: .4375rem;
+}
+
+.banner-img-top {
+  width: 46.625rem;
+  height: 21.25rem;
+}
+
+.banner-container {
+  width: 22.3125rem;
+  height: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.banner-slogan-top {
+  font-family: 'Pretendard';
+  font-size: 2.5rem;
+  font-style: bold;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.banner-button {
+  width: 6.875rem;
+  height: 1.5rem;
+  border-radius: 2.5rem;
+  padding: 1rem 7.75rem;
+  background-color: #3692ff;
+  font-family: 'Pretendard';
+  font-size: 20px;
+  font-style: SemiBold;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: middle;
+  color: #F9FAFB;
+  cursor: pointer;
+}
+
+#main-text {
+  width: auto;
+  background-color: #ffffff;
+  display: grid;
+  grid-template-rows: 45rem 45rem 45rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid01 {
+  width: 61.75rem;
+  height: 27.75rem;
+  padding: 0 1.9375rem;
+  box-sizing: border-box;
+  background-color: #FCFCFC;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4rem;
+}
+
+.grid01-textbox {
+  width: 17.125rem;
+  height: 14.875rem;
+}
+
+.grid02 {
+  width: 61.75rem;
+  height: 27.75rem;
+  padding: 0 .5938rem;
+  background-color: #FCFCFC;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row-reverse;
+  align-items: center;
+  text-align: right;
+  gap: 4rem;
+}
+
+.grid02-textbox {
+  width: 19.8125rem;
+  height: 14.875rem;
+}
+
+.grid03 {
+  width: 61.75rem;
+  height: 27.75rem;
+  padding: 0 .0313rem;
+  box-sizing: border-box;
+  background-color: #FCFCFC;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4rem;
+}
+
+.grid03-textbox {
+  width: 22.1875rem;
+  height: 14.875rem;
+}
+
+.grid-keyword {
+  font-family: 'Pretendard';
+  font-style: Bold;
+  font-size: 1.125rem;
+  font-weight: 700; 
+  letter-spacing: 0%;
+  line-height: 1.625rem;
+  vertical-align: middle;
+  color: #3692ff;
+
+}
+
+.grid-slogan {
+  margin-top: .75rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 2.5rem;
+  line-height: 140%;
+  letter-spacing: 2%;
+  vertical-align: middle;
+  color: #374151;
+}
+
+.grid-explane {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color: #374151;
+}
+
+.grid-img {
+  width: 36.75rem;
+  height: 27.75rem;
+}
+
+#main-banner-bottom {
+  width: auto;
+  height: 33.75rem;
+  background-color: #CFE5FF;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+.box {
+  width: auto;
+  height: 8.625rem;
+  background-color: #fcfcfc;
+  content: " ";
+}
+
+.banner-bottom {
+  width: 69.375rem;
+  height: 24.8125rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4.3125rem;
+}
+
+.banner-slogan-bottom {
+  padding-bottom: 3.75rem;
+  font-family: 'Pretendard';
+  font-size: 2.5rem;
+  font-style: bold;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.banner-img-bottom {
+  width: 46.625rem;
+  height: 24.8125rem;
+}
+
+#footer {
+  width: auto;
+  height: 11.25rem;
+  background-color: #111827;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-inner {
+  width: 95rem;
+  height: 1.25rem;
+  margin-top: 2rem;
+  padding: 0 12.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.copy{
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #9CA3AF;
+}
+
+.help-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1.875rem;
+}
+
+.help {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #E5E7EB;
+  cursor: pointer;
+}
+
+.sns-container {
+  display: flex;
+  flex-direction: row;
+  gap: .75rem;
+}
+
+.sns {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
