@@ -11,7 +11,7 @@ export const AUTH_MESSAGES = {
   emailRequired: '이메일을 입력해주세요.',
   emailInvalid: '잘못된 이메일 형식입니다',
   passwordRequired: '비밀번호를 입력해주세요.',
-  passwordShort: '비밀번호를 8자 이상 입력해주세요.',
+  passwordShort: '비밀번호를 10자 이상 입력해주세요.',
   passwordWeak: '비밀번호는 영문 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.',
   passwordForbiddenSpecial: '- 사용 불가능한 특수문자입니다.',
   passwordMismatch: '비밀번호가 일치하지 않습니다.',
