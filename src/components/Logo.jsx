@@ -1,3 +1,5 @@
+import { goToMarketTop } from '../utils/navigation.js';
+
 const sizeClass = {
   header: {
     wrap: 'logo-link logo-link--header',
@@ -11,6 +13,8 @@ const sizeClass = {
   },
 };
 
+const LOGO_IMAGE = '/images/판다 얼굴.png';
+
 function Logo({ variant = 'header' }) {
   const styles = sizeClass[variant];
   const isHeaderLogo = variant === 'header';
@@ -21,12 +25,12 @@ function Logo({ variant = 'header' }) {
     }
 
     event.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    goToMarketTop();
   };
 
   return (
-    <a href={isHeaderLogo ? '#top' : '#/'} className={styles.wrap} onClick={handleClick} aria-label="판다마켓 홈">
-      <img className={styles.image} src="/images/판다 얼굴.png" alt="" />
+    <a href={isHeaderLogo ? '#/market' : '#/'} className={styles.wrap} onClick={handleClick} aria-label="판다마켓 홈">
+      <img className={styles.image} src={LOGO_IMAGE} alt="" />
       <span className={styles.text}>판다마켓</span>
     </a>
   );

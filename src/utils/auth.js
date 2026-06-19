@@ -1,10 +1,10 @@
 export const USER_DATA = [
-  { email: 'codeit1@codeit.com', password: 'codeit101!' },
-  { email: 'codeit2@codeit.com', password: 'codeit202!' },
-  { email: 'codeit3@codeit.com', password: 'codeit303!' },
-  { email: 'codeit4@codeit.com', password: 'codeit404!' },
-  { email: 'codeit5@codeit.com', password: 'codeit505!' },
-  { email: 'codeit6@codeit.com', password: 'codeit606!' },
+  { email: 'codeit1@codeit.com', password: 'Codeit1111!' },
+  { email: 'codeit2@codeit.com', password: 'Codeit2222!' },
+  { email: 'codeit3@codeit.com', password: 'Codeit3333!' },
+  { email: 'codeit4@codeit.com', password: 'Codeit4444!' },
+  { email: 'codeit5@codeit.com', password: 'Codeit5555!' },
+  { email: 'codeit6@codeit.com', password: 'Codeit6666!' },
 ];
 
 export const AUTH_MESSAGES = {

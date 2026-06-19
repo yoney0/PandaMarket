@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import Footer from './components/Footer.jsx';
 import Header from './components/Header.jsx';
+import ScrollTopButton from './components/ScrollTopButton.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import MarketPage from './pages/MarketPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import SimplePage from './pages/SimplePage.jsx';
@@ -32,6 +34,10 @@ function useHashRoute() {
 function App() {
   const [route, navigate] = useHashRoute();
 
+  if (route === '/market') {
+    return <MarketPage />;
+  }
+
   if (route === '/login') {
     return <LoginPage onNavigate={navigate} />;
   }
@@ -42,6 +48,7 @@ function App() {
 
   const page = {
     '/': <HomePage onNavigate={navigate} />,
+    '/landing': <HomePage onNavigate={navigate} />,
     '/items': <ProductsPage />,
     '/policy': <SimplePage title="Privacy Policy" links={[['/faq', 'FAQ'], ['/', '홈으로 돌아가기']]} />,
     '/faq': <SimplePage title="FAQ" links={[['/policy', 'Privacy Policy'], ['/', '홈으로 돌아가기']]} />,
@@ -51,7 +58,8 @@ function App() {
     <div className="page-shell">
       <Header />
       <main className="pt-[70px]">{page}</main>
-      {route === '/' && <Footer />}
+      <ScrollTopButton />
+      {(route === '/' || route === '/landing') && <Footer />}
     </div>
   );
 }

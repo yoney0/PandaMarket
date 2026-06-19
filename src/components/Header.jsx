@@ -1,8 +1,9 @@
 import Logo from './Logo.jsx';
+import { handleMobileHeaderClick } from '../utils/navigation.js';
 
 function Header() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-[70px] bg-gray-100">
+    <header className="fixed inset-x-0 top-0 z-50 h-[4.375rem] bg-gray-100" onClick={handleMobileHeaderClick}>
       <div className="header-content">
         <Logo />
         <a

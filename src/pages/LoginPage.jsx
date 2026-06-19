@@ -50,7 +50,7 @@ function LoginPage() {
       return;
     }
 
-    window.location.hash = '/items';
+    window.location.hash = '/market';
   };
 
   return (

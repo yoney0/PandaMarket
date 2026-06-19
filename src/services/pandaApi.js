@@ -1,12 +1,16 @@
-const BASE_URL = 'https://panda-market-api-crud.vercel.app';
+const BASE_URL = 'https://panda-market-api.vercel.app';
 
-function buildListUrl(path, { page = 1, pageSize = 10, keyword = '' } = {}) {
+function buildListUrl(path, { page = 1, pageSize = 15, keyword = '', orderBy = '' } = {}) {
   const url = new URL(path, BASE_URL);
   url.searchParams.set('page', page);
   url.searchParams.set('pageSize', pageSize);
 
   if (keyword) {
     url.searchParams.set('keyword', keyword);
+  }
+
+  if (orderBy) {
+    url.searchParams.set('orderBy', orderBy);
   }
 
   return url;
