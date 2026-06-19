@@ -1,26 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
+import Footer from '../components/Footer.jsx';
+import Header from '../components/Header.jsx';
 import ScrollTopButton from '../components/ScrollTopButton.jsx';
 import useBreakpoint from '../hooks/useBreakpoint.js';
 import useProducts from '../hooks/useProducts.js';
-import { goToMarketTop, handleMobileHeaderClick } from '../utils/navigation.js';
 
 const FALLBACK_IMAGE = '/images/Img_home_01.png';
-const LOGO_IMAGE = '/images/panda-logo.png';
 const PAGE_SIZE = {
   desktop: { best: 4, products: 15 },
-  tablet: { best: 2, products: 6 },
-  mobile: { best: 1, products: 4 },
+  tablet: { best: 2, products: 9 },
+  mobile: { best: 1, products: 8 },
 };
 const ORDER_LABELS = {
   recent: '최신순',
   favorite: '좋아요순',
 };
-
-const socialLinks = [
-  ['https://www.facebook.com/', '/images/ic_facebook.png', 'Facebook'],
-  ['https://x.com/', '/images/ic_twitter.png', 'X'],
-  ['https://www.youtube.com/', '/images/ic_youtube.png', 'YouTube'],
-  ['https://www.instagram.com/', '/images/ic_instagram.png', 'Instagram'],
+const MARKET_NAV_LINKS = [
+  ['#free-board', '자유게시판'],
+  ['#top', '중고마켓'],
 ];
 
 function formatPrice(price) {
@@ -118,47 +115,26 @@ function Pagination({ page, totalCount, pageSize, onPageChange }) {
   );
 }
 
-function MarketHeader() {
-  const handleLogoClick = (event) => {
-    event.preventDefault();
-    goToMarketTop();
-  };
-
+function MarketFloatingControls({ searchValue, onSearchChange, onSubmitSearch }) {
   return (
-    <header className="market-header" onClick={handleMobileHeaderClick}>
-      <div className="market-header__inner">
-        <nav className="market-header__left" aria-label="주요 메뉴">
-          <a className="market-logo" href="#/market" onClick={handleLogoClick} aria-label="판다마켓 최상단으로 이동">
-            <img className="market-logo__image" src={LOGO_IMAGE} alt="" />
-            <span className="market-logo__text">판다마켓</span>
-          </a>
-          <a className="market-nav-link" href="#free-board">자유게시판</a>
-          <a className="market-nav-link" href="#top">중고마켓</a>
-        </nav>
-        <a className="market-login" href="#/login">로그인</a>
+    <div className="market-floating-panel">
+      <div className="market-floating-controls" aria-label="상품 검색과 등록">
+        <form className="market-search-form" role="search" onSubmit={onSubmitSearch}>
+          <label className="sr-only" htmlFor="product-search">상품 검색</label>
+          <span className="market-search-form__icon" aria-hidden="true" />
+          <input
+            id="product-search"
+            type="search"
+            placeholder="검색할 상품을 입력해주세요"
+            value={searchValue}
+            onChange={(event) => onSearchChange(event.target.value)}
+            autoComplete="off"
+          />
+        </form>
+        <a className="market-register-button" href="#register">상품 등록하기</a>
       </div>
-    </header>
-  );
-}
-
-function MarketFooter() {
-  return (
-    <footer className="market-footer">
-      <div className="market-footer__inner">
-        <p className="market-footer__copy">©codeit - 2024</p>
-        <nav className="market-footer__links" aria-label="푸터 메뉴">
-          <a href="#/policy">Privacy Policy</a>
-          <a href="#/faq">FAQ</a>
-        </nav>
-        <div className="market-footer__socials">
-          {socialLinks.map(([href, src, label]) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
-              <img src={src} alt="" />
-            </a>
-          ))}
-        </div>
-      </div>
-    </footer>
+      <ScrollTopButton />
+    </div>
   );
 }
 
@@ -236,7 +212,15 @@ function MarketPage() {
 
   return (
     <div className="market-page" id="top">
-      <MarketHeader />
+      <Header logoMode="market" navLinks={MARKET_NAV_LINKS} variant="market" />
+      <MarketFloatingControls
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        onSubmitSearch={submitSearch}
+      />
+      <div className="market-desktop-scroll-slot">
+        <ScrollTopButton />
+      </div>
       <main className="market-main">
         <section className="market-section market-best-section" aria-labelledby="best-title">
           <h1 id="best-title" className="market-section-title">베스트 상품</h1>
@@ -251,19 +235,6 @@ function MarketPage() {
           <div className="market-sale-toolbar">
             <h2 id="sale-title" className="market-section-title">판매 중인 상품</h2>
             <div className="market-sale-actions">
-              <form className="market-search-form" role="search" onSubmit={submitSearch}>
-                <label className="sr-only" htmlFor="product-search">상품 검색</label>
-                <span className="market-search-form__icon" aria-hidden="true" />
-                <input
-                  id="product-search"
-                  type="search"
-                  placeholder="검색할 상품을 입력해주세요"
-                  value={searchValue}
-                  onChange={(event) => setSearchValue(event.target.value)}
-                  autoComplete="off"
-                />
-              </form>
-              <a className="market-register-button" href="#register">상품 등록하기</a>
               <div className={`market-sort-control ${isSortOpen ? 'is-open' : ''}`}>
                 <button
                   className="market-sort-button"
@@ -302,8 +273,7 @@ function MarketPage() {
           <Pagination page={page} totalCount={products.totalCount} pageSize={sizes.products} onPageChange={setPage} />
         </section>
       </main>
-      <ScrollTopButton />
-      <MarketFooter />
+      <Footer />
     </div>
   );
 }

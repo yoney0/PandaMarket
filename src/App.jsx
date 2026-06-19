@@ -33,6 +33,7 @@ function useHashRoute() {
 
 function App() {
   const [route, navigate] = useHashRoute();
+  const isLandingRoute = route === '/' || route === '/landing';
 
   if (route === '/market') {
     return <MarketPage />;
@@ -56,10 +57,10 @@ function App() {
 
   return (
     <div className="page-shell">
-      <Header />
-      <main className="pt-[70px]">{page}</main>
-      <ScrollTopButton />
-      {(route === '/' || route === '/landing') && <Footer />}
+      <Header logoMode={isLandingRoute ? 'scrollTop' : 'market'} />
+      <main className="pt-[4.375rem]">{page}</main>
+      {!isLandingRoute && <ScrollTopButton />}
+      {isLandingRoute && <Footer />}
     </div>
   );
 }

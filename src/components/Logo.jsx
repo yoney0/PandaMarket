@@ -1,4 +1,4 @@
-import { goToMarketTop } from '../utils/navigation.js';
+import { goToMarketTop, scrollToPageTop } from '../utils/navigation.js';
 
 const sizeClass = {
   header: {
@@ -15,9 +15,10 @@ const sizeClass = {
 
 const LOGO_IMAGE = '/images/panda-logo.png';
 
-function Logo({ variant = 'header' }) {
+function Logo({ variant = 'header', logoMode = 'market' }) {
   const styles = sizeClass[variant];
   const isHeaderLogo = variant === 'header';
+  const href = isHeaderLogo && logoMode === 'scrollTop' ? '#top' : isHeaderLogo ? '#/market' : '#/';
 
   const handleClick = (event) => {
     if (!isHeaderLogo) {
@@ -25,11 +26,16 @@ function Logo({ variant = 'header' }) {
     }
 
     event.preventDefault();
+    if (logoMode === 'scrollTop') {
+      scrollToPageTop();
+      return;
+    }
+
     goToMarketTop();
   };
 
   return (
-    <a href={isHeaderLogo ? '#/market' : '#/'} className={styles.wrap} onClick={handleClick} aria-label="판다마켓 홈">
+    <a href={href} className={styles.wrap} onClick={handleClick} aria-label="판다마켓 홈">
       <img className={styles.image} src={LOGO_IMAGE} alt="" />
       <span className={styles.text}>판다마켓</span>
     </a>
