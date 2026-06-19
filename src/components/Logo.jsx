@@ -13,7 +13,7 @@ const sizeClass = {
   },
 };
 
-const LOGO_IMAGE = '/images/판다 얼굴.png';
+const LOGO_IMAGE = '/images/panda-logo.png';
 
 function Logo({ variant = 'header' }) {
   const styles = sizeClass[variant];

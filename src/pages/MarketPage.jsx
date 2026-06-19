@@ -5,7 +5,7 @@ import useProducts from '../hooks/useProducts.js';
 import { goToMarketTop, handleMobileHeaderClick } from '../utils/navigation.js';
 
 const FALLBACK_IMAGE = '/images/Img_home_01.png';
-const LOGO_IMAGE = '/images/판다 얼굴.png';
+const LOGO_IMAGE = '/images/panda-logo.png';
 const PAGE_SIZE = {
   desktop: { best: 4, products: 15 },
   tablet: { best: 2, products: 6 },
