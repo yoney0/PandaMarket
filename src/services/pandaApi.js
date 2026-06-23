@@ -1,105 +1,121 @@
+import axios from 'axios';
+
 const BASE_URL = 'https://panda-market-api.vercel.app';
 
-function buildListUrl(path, { page = 1, pageSize = 15, keyword = '', orderBy = '' } = {}) {
-  const url = new URL(path, BASE_URL);
-  url.searchParams.set('page', page);
-  url.searchParams.set('pageSize', pageSize);
+const pandaApi = axios.create({
+  baseURL: BASE_URL,
+});
+
+function buildListParams({ page = 1, pageSize = 15, keyword = '', orderBy = '' } = {}) {
+  const params = { page, pageSize };
 
   if (keyword) {
-    url.searchParams.set('keyword', keyword);
+    params.keyword = keyword;
   }
 
   if (orderBy) {
-    url.searchParams.set('orderBy', orderBy);
+    params.orderBy = orderBy;
   }
 
-  return url;
+  return params;
 }
 
-async function parseJson(response) {
-  const text = await response.text();
-  return text ? JSON.parse(text) : null;
-}
+function getRequestErrorMessage(error) {
+  const status = error.response?.status;
+  const message = error.response?.data?.message;
 
-async function request(path, options) {
-  const response = await fetch(`${BASE_URL}${path}`, options);
-  const data = await parseJson(response);
-
-  if (!response.ok) {
-    throw new Error(data?.message || `요청 실패. 에러 코드 : ${response.status}`);
+  if (message) {
+    return message;
   }
 
-  return data;
+  if (status) {
+    return `요청 실패. 에러 코드 : ${status}`;
+  }
+
+  return error.message || '요청에 실패했습니다.';
+}
+
+async function request(config) {
+  try {
+    const response = await pandaApi.request(config);
+    return response.data === '' ? null : response.data;
+  } catch (error) {
+    throw new Error(getRequestErrorMessage(error));
+  }
 }
 
 export function getProductList(params) {
-  return fetch(buildListUrl('/products', params)).then(async (response) => {
-    const data = await parseJson(response);
-
-    if (!response.ok) {
-      throw new Error(data?.message || `요청 실패. 에러 코드 : ${response.status}`);
-    }
-
-    return data;
+  return request({
+    url: '/products',
+    method: 'GET',
+    params: buildListParams(params),
   });
 }
 
 export function getProduct(productId) {
-  return request(`/products/${productId}`);
+  return request({
+    url: `/products/${productId}`,
+    method: 'GET',
+  });
 }
 
 export function createProduct(product) {
-  return request('/products', {
+  return request({
+    url: '/products',
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product),
+    data: product,
   });
 }
 
 export function patchProduct(productId, product) {
-  return request(`/products/${productId}`, {
+  return request({
+    url: `/products/${productId}`,
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product),
+    data: product,
   });
 }
 
 export function deleteProduct(productId) {
-  return request(`/products/${productId}`, { method: 'DELETE' });
+  return request({
+    url: `/products/${productId}`,
+    method: 'DELETE',
+  });
 }
 
 export function getArticleList(params) {
-  return fetch(buildListUrl('/articles', params)).then(async (response) => {
-    const data = await parseJson(response);
-
-    if (!response.ok) {
-      throw new Error(data?.message || `요청 실패. 에러 코드 : ${response.status}`);
-    }
-
-    return data;
+  return request({
+    url: '/articles',
+    method: 'GET',
+    params: buildListParams(params),
   });
 }
 
 export function getArticle(articleId) {
-  return request(`/articles/${articleId}`);
+  return request({
+    url: `/articles/${articleId}`,
+    method: 'GET',
+  });
 }
 
 export function createArticle(article) {
-  return request('/articles', {
+  return request({
+    url: '/articles',
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(article),
+    data: article,
   });
 }
 
 export function patchArticle(articleId, article) {
-  return request(`/articles/${articleId}`, {
+  return request({
+    url: `/articles/${articleId}`,
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(article),
+    data: article,
   });
 }
 
 export function deleteArticle(articleId) {
-  return request(`/articles/${articleId}`, { method: 'DELETE' });
+  return request({
+    url: `/articles/${articleId}`,
+    method: 'DELETE',
+  });
 }
