@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import Header from '../components/Header.jsx';
 import ScrollTopButton from '../components/ScrollTopButton.jsx';
@@ -7,25 +8,13 @@ import useProducts from '../hooks/useProducts.js';
 
 const FALLBACK_IMAGE = '/images/Img_home_01.png';
 const PAGE_SIZE = {
-  desktop: { best: 4, products: 15 },
-  tablet: { best: 2, products: 9 },
-  mobile: { best: 1, products: 8 },
+  desktop: { products: 15 },
+  tablet: { products: 9 },
+  mobile: { products: 8 },
 };
-const ORDER_LABELS = {
-  recent: '최신순',
-  favorite: '좋아요순',
-};
-const MARKET_NAV_LINKS = [
-  ['#free-board', '자유게시판'],
-  ['#top', '중고마켓'],
-];
 
 function formatPrice(price) {
   return `${Number(price || 0).toLocaleString('ko-KR')}원`;
-}
-
-function getProductImage(product) {
-  return product?.images?.[0] || product?.image || FALLBACK_IMAGE;
 }
 
 function ProductCard({ product, isLoading = false }) {
@@ -33,34 +22,40 @@ function ProductCard({ product, isLoading = false }) {
     <article className={`market-product-card ${isLoading ? 'is-loading' : ''}`}>
       <img
         className="market-product-card__image"
-        src={getProductImage(product)}
+        src={FALLBACK_IMAGE}
         alt={product?.name || '상품 이미지'}
         loading="lazy"
-        onError={(event) => {
-          event.currentTarget.src = FALLBACK_IMAGE;
-        }}
       />
       <div className="market-product-card__body">
         <h3 className="market-product-card__name">{product?.name || '불러오는 중'}</h3>
         <p className="market-product-card__price">{formatPrice(product?.price)}</p>
-        <p className="market-product-card__favorite">
-          <span aria-hidden="true">♡</span>
-          <span>{Number(product?.favoriteCount || 0).toLocaleString('ko-KR')}</span>
-        </p>
+        {product?.createdAt ? (
+          <p className="market-product-card__date">
+            {new Date(product.createdAt).toLocaleDateString('ko-KR')}
+          </p>
+        ) : null}
       </div>
     </article>
   );
 }
 
-function ProductGrid({ products, pageSize, isLoading, type }) {
+function ProductGrid({ products, pageSize, isLoading }) {
   const list = isLoading
-    ? Array.from({ length: pageSize }, (_, index) => ({ id: `loading-${type}-${index}` }))
+    ? Array.from({ length: pageSize }, (_, index) => ({ id: `loading-products-${index}` }))
     : products;
 
   return (
-    <div className={`market-product-grid market-${type}-grid`}>
+    <div className="market-product-grid market-products-grid">
       {list.map((product) => (
-        <ProductCard key={product.id || `${type}-${product.name}`} product={product} isLoading={isLoading} />
+        <Link
+          key={product.id || product._id || product.name}
+          className="market-product-card-link"
+          to={product.id ? `/items/${product.id}` : '#'}
+          tabIndex={isLoading ? -1 : 0}
+          aria-disabled={isLoading}
+        >
+          <ProductCard product={product} isLoading={isLoading} />
+        </Link>
       ))}
     </div>
   );
@@ -131,7 +126,7 @@ function MarketFloatingControls({ searchValue, onSearchChange, onSubmitSearch })
             autoComplete="off"
           />
         </form>
-        <a className="market-register-button" href="#register">상품 등록하기</a>
+        <Link className="market-register-button" to="/registration">상품 등록하기</Link>
       </div>
       <ScrollTopButton />
     </div>
@@ -142,17 +137,14 @@ function MarketPage() {
   const breakpoint = useBreakpoint();
   const sizes = PAGE_SIZE[breakpoint];
   const [page, setPage] = useState(1);
-  const [orderBy, setOrderBy] = useState('recent');
   const [searchValue, setSearchValue] = useState('');
   const [keyword, setKeyword] = useState('');
-  const [isSortOpen, setIsSortOpen] = useState(false);
 
-  const bestProducts = useProducts({ page: 1, pageSize: sizes.best, orderBy: 'favorite' });
-  const products = useProducts({ page, pageSize: sizes.products, keyword, orderBy });
+  const products = useProducts({ page, pageSize: sizes.products, keyword });
 
   useEffect(() => {
     setPage(1);
-  }, [breakpoint, keyword, orderBy]);
+  }, [breakpoint, keyword]);
 
   useEffect(() => {
     const timerId = window.setTimeout(() => {
@@ -161,32 +153,6 @@ function MarketPage() {
 
     return () => window.clearTimeout(timerId);
   }, [searchValue]);
-
-  useEffect(() => {
-    if (!isSortOpen) {
-      return undefined;
-    }
-
-    const closeSort = (event) => {
-      if (!event.target.closest('.market-sort-control')) {
-        setIsSortOpen(false);
-      }
-    };
-
-    const closeOnEscape = (event) => {
-      if (event.key === 'Escape') {
-        setIsSortOpen(false);
-      }
-    };
-
-    document.addEventListener('click', closeSort);
-    document.addEventListener('keydown', closeOnEscape);
-
-    return () => {
-      document.removeEventListener('click', closeSort);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [isSortOpen]);
 
   const statusText = useMemo(() => {
     if (products.isLoading) {
@@ -205,14 +171,9 @@ function MarketPage() {
     setKeyword(searchValue.trim());
   };
 
-  const selectOrder = (nextOrderBy) => {
-    setOrderBy(nextOrderBy);
-    setIsSortOpen(false);
-  };
-
   return (
     <div className="market-page" id="top">
-      <Header logoMode="market" navLinks={MARKET_NAV_LINKS} variant="market" />
+      <Header logoMode="market" />
       <MarketFloatingControls
         searchValue={searchValue}
         onSearchChange={setSearchValue}
@@ -222,53 +183,17 @@ function MarketPage() {
         <ScrollTopButton />
       </div>
       <main className="market-main">
-        <section className="market-section market-best-section" aria-labelledby="best-title">
-          <h1 id="best-title" className="market-section-title">베스트 상품</h1>
-          {bestProducts.error ? (
-            <p className="market-product-status">{bestProducts.error}</p>
-          ) : (
-            <ProductGrid products={bestProducts.list} pageSize={sizes.best} isLoading={bestProducts.isLoading} type="best" />
-          )}
-        </section>
-
         <section className="market-section market-sale-section" aria-labelledby="sale-title">
           <div className="market-sale-toolbar">
-            <h2 id="sale-title" className="market-section-title">판매 중인 상품</h2>
-            <div className="market-sale-actions">
-              <div className={`market-sort-control ${isSortOpen ? 'is-open' : ''}`}>
-                <button
-                  className="market-sort-button"
-                  type="button"
-                  aria-haspopup="listbox"
-                  aria-expanded={isSortOpen}
-                  onClick={() => setIsSortOpen((current) => !current)}
-                >
-                  <span className="market-sort-button__label">{ORDER_LABELS[orderBy]}</span>
-                  <span className="market-sort-button__icon" aria-hidden="true" />
-                </button>
-                <ul className="market-sort-menu" role="listbox" tabIndex="-1">
-                  {Object.entries(ORDER_LABELS).map(([value, label]) => (
-                    <li key={value}>
-                      <button
-                        type="button"
-                        role="option"
-                        aria-selected={orderBy === value}
-                        onClick={() => selectOrder(value)}
-                      >
-                        {label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <h1 id="sale-title" className="market-section-title">판매 중인 상품</h1>
+            <p className="market-sort-label">최신순</p>
           </div>
 
           <p className="market-product-status" aria-live="polite">{statusText}</p>
           {products.error ? (
             <p className="market-product-status">{products.error}</p>
           ) : (
-            <ProductGrid products={products.list} pageSize={sizes.products} isLoading={products.isLoading} type="products" />
+            <ProductGrid products={products.list} pageSize={sizes.products} isLoading={products.isLoading} />
           )}
           <Pagination page={page} totalCount={products.totalCount} pageSize={sizes.products} onPageChange={setPage} />
         </section>

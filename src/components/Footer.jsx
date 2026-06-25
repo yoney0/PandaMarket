@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const socialLinks = [
   ['https://www.facebook.com/', '/images/ic_facebook.png', 'Facebook'],
   ['https://x.com/', '/images/ic_twitter.png', 'X'],
@@ -11,10 +13,10 @@ function Footer() {
       <div className="footer-content">
         <div className="footer-links-group">
           <nav className="footer-links" aria-label="도움말">
-            <a href="#/policy">Privacy Policy</a>
-            <a href="#/faq">FAQ</a>
+            <Link to="/policy">Privacy Policy</Link>
+            <Link to="/faq">FAQ</Link>
           </nav>
-          <p className="footer-copy">©codeit - 2026</p>
+          <p className="footer-copy">©codeit - 2024</p>
         </div>
         <div className="footer-socials">
           {socialLinks.map(([href, src, label]) => (
@@ -23,10 +25,10 @@ function Footer() {
             </a>
           ))}
         </div>
-        <p className="footer-copy footer-copy--desktop">©codeit - 2026</p>
+        <p className="footer-copy footer-copy--desktop">©codeit - 2024</p>
         <nav className="footer-links footer-links--desktop" aria-label="도움말 데스크톱">
-          <a href="#/policy">Privacy Policy</a>
-          <a href="#/faq">FAQ</a>
+          <Link to="/policy">Privacy Policy</Link>
+          <Link to="/faq">FAQ</Link>
         </nav>
       </div>
     </footer>

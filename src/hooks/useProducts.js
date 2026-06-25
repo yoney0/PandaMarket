@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getProductList } from '../services/pandaApi.js';
 
-function useProducts({ page, pageSize, keyword = '', orderBy = '' }) {
+function useProducts({ page, pageSize, keyword = '' }) {
   const [data, setData] = useState({ list: [], totalCount: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -12,7 +12,7 @@ function useProducts({ page, pageSize, keyword = '', orderBy = '' }) {
     setIsLoading(true);
     setError('');
 
-    getProductList({ page, pageSize, keyword, orderBy })
+    getProductList({ page, pageSize, keyword })
       .then((response) => {
         if (ignore) {
           return;
@@ -40,7 +40,7 @@ function useProducts({ page, pageSize, keyword = '', orderBy = '' }) {
     return () => {
       ignore = true;
     };
-  }, [page, pageSize, keyword, orderBy]);
+  }, [page, pageSize, keyword]);
 
   return { ...data, isLoading, error };
 }

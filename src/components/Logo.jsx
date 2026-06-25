@@ -1,4 +1,5 @@
-import { goToMarketTop, scrollToPageTop } from '../utils/navigation.js';
+import { Link } from 'react-router-dom';
+import { scrollToPageTop } from '../utils/navigation.js';
 
 const sizeClass = {
   header: {
@@ -18,27 +19,20 @@ const LOGO_IMAGE = '/images/panda-logo.png';
 function Logo({ variant = 'header', logoMode = 'market' }) {
   const styles = sizeClass[variant];
   const isHeaderLogo = variant === 'header';
-  const href = isHeaderLogo && logoMode === 'scrollTop' ? '#top' : isHeaderLogo ? '#/market' : '#/';
+  const to = isHeaderLogo && logoMode !== 'scrollTop' ? '/items' : '/';
 
   const handleClick = (event) => {
-    if (!isHeaderLogo) {
-      return;
-    }
-
-    event.preventDefault();
-    if (logoMode === 'scrollTop') {
+    if (isHeaderLogo && logoMode === 'scrollTop') {
+      event.preventDefault();
       scrollToPageTop();
-      return;
     }
-
-    goToMarketTop();
   };
 
   return (
-    <a href={href} className={styles.wrap} onClick={handleClick} aria-label="판다마켓 홈">
+    <Link to={to} className={styles.wrap} onClick={handleClick} aria-label="판다마켓 홈">
       <img className={styles.image} src={LOGO_IMAGE} alt="" />
       <span className={styles.text}>판다마켓</span>
-    </a>
+    </Link>
   );
 }
 

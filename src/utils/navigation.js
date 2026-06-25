@@ -14,11 +14,11 @@ export function scrollToPageTop(behavior = 'smooth') {
 }
 
 export function goToMarketTop() {
-  if (window.location.hash === '#/market') {
+  if (window.location.pathname === '/items') {
     scrollToPageTop();
     return;
   }
 
-  window.location.hash = '/market';
+  window.location.assign('/items');
   window.setTimeout(() => scrollToPageTop(), 0);
 }

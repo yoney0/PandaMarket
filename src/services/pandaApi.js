@@ -1,24 +1,10 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://panda-market-api.vercel.app';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const pandaApi = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_BASE_URL,
 });
-
-function buildListParams({ page = 1, pageSize = 15, keyword = '', orderBy = '' } = {}) {
-  const params = { page, pageSize };
-
-  if (keyword) {
-    params.keyword = keyword;
-  }
-
-  if (orderBy) {
-    params.orderBy = orderBy;
-  }
-
-  return params;
-}
 
 function getRequestErrorMessage(error) {
   const status = error.response?.status;
@@ -44,11 +30,16 @@ async function request(config) {
   }
 }
 
-export function getProductList(params) {
+export function getProductList({ page = 1, pageSize = 15, keyword = '' } = {}) {
   return request({
     url: '/products',
     method: 'GET',
-    params: buildListParams(params),
+    params: {
+      offset: Math.max(0, (page - 1) * pageSize),
+      limit: pageSize,
+      orderBy: 'recent',
+      ...(keyword ? { keyword } : {}),
+    },
   });
 }
 
@@ -78,44 +69,6 @@ export function patchProduct(productId, product) {
 export function deleteProduct(productId) {
   return request({
     url: `/products/${productId}`,
-    method: 'DELETE',
-  });
-}
-
-export function getArticleList(params) {
-  return request({
-    url: '/articles',
-    method: 'GET',
-    params: buildListParams(params),
-  });
-}
-
-export function getArticle(articleId) {
-  return request({
-    url: `/articles/${articleId}`,
-    method: 'GET',
-  });
-}
-
-export function createArticle(article) {
-  return request({
-    url: '/articles',
-    method: 'POST',
-    data: article,
-  });
-}
-
-export function patchArticle(articleId, article) {
-  return request({
-    url: `/articles/${articleId}`,
-    method: 'PATCH',
-    data: article,
-  });
-}
-
-export function deleteArticle(articleId) {
-  return request({
-    url: `/articles/${articleId}`,
     method: 'DELETE',
   });
 }
